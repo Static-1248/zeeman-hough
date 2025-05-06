@@ -28,7 +28,7 @@ conda install numpy matplotlib
 Jupyter Lab 安装：
 
 ```bash
-conda install -c conda-forge jupyterlab jupyter-collaboration ipywidgets
+conda install -c conda-forge jupyterlab jupyter-collaboration ipywidgets ipympl
 ```
 
 ## 使用方法
