@@ -5,32 +5,11 @@ img = cv.imread(r"1.bmp")
 if img is None:
     raise FileNotFoundError("图片路径错误或文件损坏")
 
-gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+# gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+gray = img[:, :, 1]
 gray = cv.medianBlur(gray, 5)
 # gray = cv.equalizeHist(gray)          # 增强对比度，常规照片很有用
 
-# 全局变量存储上一次的参数值
-params = {
-    "dp": 0,
-    "minDist": 0,
-    "param1": 0,
-    "param2": 0,
-    "minRadius": 0,
-    "maxRadius": 0
-}
-
-# === 调参交互窗口 ===
-cv.namedWindow("Hough tune", cv.WINDOW_NORMAL)
-cv.createTrackbar("dp x10",     "Hough tune", 6, 30, lambda x: update())   # 1.2–3.0
-cv.createTrackbar("minDist",    "Hough tune", 5, 200, lambda x: update())
-cv.createTrackbar("param1",     "Hough tune", 29, 300, lambda x: update())
-cv.createTrackbar("param2",     "Hough tune", 29, 100, lambda x: update())
-cv.createTrackbar("minRadius",  "Hough tune", 203, 300, lambda x: update())
-cv.createTrackbar("maxRadius",  "Hough tune", 261, 400, lambda x: update())
-
-# 初始化显示图像
-vis = img.copy()
-cv.imshow("Hough tune", vis)
 
 def detect(gray_img, params):
     """
@@ -86,6 +65,32 @@ def update():
     vis = draw_result(gray, circles)
     print_result(circles)
     cv.imshow("Hough tune", vis)
+
+
+# === 调参交互窗口 ===
+cv.namedWindow("Hough tune", cv.WINDOW_NORMAL)
+cv.createTrackbar("dp x10",     "Hough tune", 6, 30, lambda x: update())   # 1.2–3.0
+cv.createTrackbar("minDist",    "Hough tune", 5, 200, lambda x: update())
+cv.createTrackbar("param1",     "Hough tune", 29, 300, lambda x: update())
+cv.createTrackbar("param2",     "Hough tune", 29, 100, lambda x: update())
+cv.createTrackbar("minRadius",  "Hough tune", 203, 300, lambda x: update())
+cv.createTrackbar("maxRadius",  "Hough tune", 261, 400, lambda x: update())
+
+# === 全局变量 ===
+# 存储参数值
+params = {
+    "dp": 0,
+    "minDist": 0,
+    "param1": 0,
+    "param2": 0,
+    "minRadius": 0,
+    "maxRadius": 0
+}
+
+# 初始化vis图像
+vis = img.copy()
+cv.imshow("Hough tune", vis)
+
 
 # 初始调用一次，确保界面有内容
 update()
