@@ -22,13 +22,13 @@
 conda activate phylab25xd  # 激活已配置的conda环境
 conda install -c conda-forge opencv
 conda install jupyter notebook
-conda install numpy matplotlib
+conda install numpy matplotlib ipywidgets ipympl
 ```
 
 Jupyter Lab 安装：
 
 ```bash
-conda install -c conda-forge jupyterlab jupyter-collaboration ipywidgets ipympl
+conda install -c conda-forge jupyterlab jupyter-collaboration
 ```
 
 ## 使用方法
@@ -75,7 +75,7 @@ circles = cv2.HoughCircles(
 
 ### 参数说明
 
-- `dp`：累加器分辨率与图像分辨率的比率，通常设为1
+- `dp`：累加器分辨率与图像分辨率的比率（的倒数），通常设为1
 - `minDist`：检测到的圆之间的最小距离，根据图像中圆环的密集程度调整
 - `param1`：Canny边缘检测的高阈值，影响边缘检测的灵敏度
 - `param2`：累加器阈值，值越小检测到的圆越多（可能包含更多误检），值越大检测越严格
