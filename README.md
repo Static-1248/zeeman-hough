@@ -7,12 +7,12 @@
 在conda环境下安装以下Python依赖：
 
 ```bash
-conda activate phylab25xd  # 激活已配置的conda环境
+conda activate phylab25xd                       # 激活已配置的conda环境
 
-conda install -c conda-forge opencv
-conda install jupyter notebook
-conda install numpy matplotlib
-conda install -c conda-forge ipywidgets ipympl
+conda install -c conda-forge opencv             # OpenCV
+conda install jupyter notebook                  # jupyter notebook
+conda install numpy matplotlib                  # matplotlib可视化
+conda install -c conda-forge ipywidgets ipympl  # jupyter notebook + matplotlib 的交互式可视化
 ```
 
 Jupyter Lab 服务器需安装：
@@ -21,7 +21,7 @@ Jupyter Lab 服务器需安装：
 conda install -c conda-forge jupyterlab jupyter-collaboration
 ```
 
-## HoughCircles算法
+## HoughCircles算法笔记
 
 ```python
 circles = cv2.HoughCircles(
@@ -50,8 +50,9 @@ circles = cv2.HoughCircles(
 
 注：
 - c++ 源码里的隐藏参数：
-    - `param3`参数，控制Canny/Sobel算法的kernalSize。默认值为3。
-    - `maxCircles`参数，控制返回的圆心个数。默认值为-1。
+    - `param3`参数，控制Canny/Sobel算法的kernalSize。调用值为3。
+    - `maxCircles`参数，控制返回的圆心个数。调用值为-1。
+    - 源码里有一个带这些参数的函数以及一个没有这些参数的函数。OpenCV将后者开放使用，后者的函数体内部使用上述的调用值调用前者。
 - `minRadius` 下限为0；
 - `maxRadius <= 0` 时 `maxRadius` 取图像宽高最大值；
 - `maxRadius <= minRadius` 时 `maxRadius` 取 `minRadius + 2`；
@@ -81,7 +82,7 @@ circles = cv2.HoughCircles(
     - 对于每个投票点，计算其在累加器中的投票数，如果投票数大于`param2`，则认为该点为圆心。
     - 圆心列表按照累加得票数从大到小排序。
     - 该步骤中计算出：
-        - `circles`：可能的圆心位置列表
+        - `centers`：可能的圆心位置列表
 
 4. **圆半径估计**：对每个圆心位置估计其半径，获得完整的圆检测结果。
     - 对于每个圆心位置，对其在`edges`图像（实际上是取`nz`边缘点列表）中距离圆心[minRadius, maxRadius]范围内的边缘点进行统计；
@@ -99,5 +100,36 @@ circles = cv2.HoughCircles(
     - 返回圆列表时半径设为0。
     
     - 该步骤中计算出：
-        - `circles`：可能的圆心位置和半径列表
+        - `circles`：可能的圆的完整数据列表
         - `circles`的格式为：`[[x, y, r], ...]`，其中`x`和`y`为圆心坐标，`r`为半径
+
+
+## 参考网址
+
+**OpenCV 官方文档：**
+
+- 两篇教程+接口文档：
+    - [OpenCV: Hough Circle Transform](https://docs.opencv.org/3.4/da/d53/tutorial_py_houghcircles.html)
+    - [OpenCV: Hough Circle Transform](https://docs.opencv.org/4.11.0/d4/d70/tutorial_hough_circle.html)
+    - `HoughCircles()` 文档：[OpenCV: Feature Detection](https://docs.opencv.org/3.4/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d)
+
+- 其他相关算法文档：
+    - 模糊图像：[OpenCV: Smoothing Images](https://docs.opencv.org/3.4/d4/d13/tutorial_py_filtering.html)
+    - `medianBlur()`：[OpenCV: Image Filtering](https://docs.opencv.org/4.11.0/d4/d86/group__imgproc__filter.html#ga564869aa33e58769b4469101aac458f9)
+    - Canny边缘检测：[OpenCV: Canny Edge Detection](https://docs.opencv.org/4.11.0/d7/de1/tutorial_js_canny.html)
+
+**其他网络资源：**
+
+- [Hough Transform using OpenCV](https://learnopencv.com/hough-transform-with-opencv-c-python/)
+
+> 注：以下4篇与OpenCV实现关联性较弱，仅介绍Hough Circle Transform算法原理
+- [Hough Circle Transform using OpenCV](https://medium.com/@isinsuarici/hough-circle-transform-in-opencv-d74bdf5161ed)
+- [Circle Hough Transform - Wikipedia](https://en.wikipedia.org/wiki/Circle_Hough_Transform)
+- [How Circle Hough Transform works - Youtube](https://www.youtube.com/watch?v=Ltqt24SQQoI)
+- [Hough Circle Transform - 知乎](https://zhuanlan.zhihu.com/p/427065017)
+
+- [How-to Guides --- Jupyter Widgets](https://ipywidgets.readthedocs.io/en/latest/how-to/index.html)
+
+**HoughCircles源码：**
+
+- [OpenCV Github](https://github.com/opencv/opencv/blob/90e7119ce025983f0ffbd0d2187b3cb1b8279b32/modules/imgproc/src/hough.cpp#L2357)
